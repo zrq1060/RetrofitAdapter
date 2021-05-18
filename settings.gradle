@@ -1,2 +1,3 @@
 rootProject.name = "RetrofitAdapter"
 include ':app'
+include ':library'

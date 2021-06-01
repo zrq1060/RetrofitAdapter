@@ -1,24 +1,26 @@
-package com.zrq.retrofit.adapter.demo
+package com.zrq.retrofit.adapter.demo.handler
 
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.ApiResponseCallHandler
 import com.zrq.retrofit.adapter.ResponseCodeErrorException
-import com.zrq.retrofit.adapter.demo.entity.BaseResult
+import com.zrq.retrofit.adapter.demo.ResponseBodyEmptyException
+import com.zrq.retrofit.adapter.demo.RulesException
+import com.zrq.retrofit.adapter.demo.entity.BaseData
 import retrofit2.Response
 
 /**
- * 描述：
+ * 描述：[BaseData]逻辑处理类，返回值不空，并且[BaseData.errorCode]为0，并且[BaseData.data]不为空，代表成功
  *
  * @author zhangrq
  * createTime 2021/5/17 15:15
  */
-class BaseResultApiResponseCallHandler : ApiResponseCallHandler {
+class BaseDataApiResponseCallHandler : ApiResponseCallHandler {
     override fun priority(): Int {
-        return 10
+        return 0
     }
 
     override fun isHandle(resultClass: Class<*>): Boolean {
-        return resultClass == BaseResult::class.java
+        return resultClass == BaseData::class.java
     }
 
     override fun <T> handleOnResponse(response: Response<T>): ApiResponse<T> {
@@ -27,24 +29,24 @@ class BaseResultApiResponseCallHandler : ApiResponseCallHandler {
             val body = response.body()
             if (body != null) {
                 // body不为空
-                val baseResult = body as BaseResult<*>
-                val baseResultCode = baseResult.code
-                if (baseResultCode == 200) {
+                val baseData = body as BaseData<*>
+                val baseDataCode = baseData.errorCode
+                if (baseDataCode == 0) {
                     // 公司规则成功
-                    val result = baseResult.result
-                    if (result != null) {
-                        // result有值
+                    val data = baseData.data
+                    if (data != null) {
+                        // data有值
                         ApiResponse.success(body)
                     } else {
-                        // result无值
-                        ApiResponse.exception(RulesException("BaseResult result is null"))
+                        // data无值
+                        ApiResponse.exception(RulesException("BaseData data is null"))
                     }
                 } else {
                     // 公司规则失败
-                    if (baseResultCode == null) {
-                        ApiResponse.exception(RulesException("BaseResult code is null"))
+                    if (baseDataCode == null) {
+                        ApiResponse.exception(RulesException("BaseData code is null"))
                     } else {
-                        ApiResponse.error(baseResultCode, baseResult.message ?: "")
+                        ApiResponse.error(baseDataCode, baseData.errorMsg ?: "")
                     }
                 }
             } else {

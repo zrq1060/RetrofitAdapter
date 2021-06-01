@@ -1,7 +1,9 @@
 package com.zrq.retrofit.adapter.demo
 
 import android.app.Application
-import com.zrq.retrofit.adapter.ApiResponseCallHandle
+import com.zrq.retrofit.adapter.ApiResponseCallHandlerManager
+import com.zrq.retrofit.adapter.demo.handler.BaseDataApiResponseCallHandler
+import com.zrq.retrofit.adapter.demo.handler.BaseResultApiResponseCallHandler
 
 /**
  * 描述：
@@ -13,7 +15,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         // 增加自定义规则
-        ApiResponseCallHandle.add(BaseDataApiResponseCallHandler())
-        ApiResponseCallHandle.add(BaseResultApiResponseCallHandler())
+        ApiResponseCallHandlerManager.add(BaseDataApiResponseCallHandler())
+        ApiResponseCallHandlerManager.add(BaseResultApiResponseCallHandler())
     }
 }

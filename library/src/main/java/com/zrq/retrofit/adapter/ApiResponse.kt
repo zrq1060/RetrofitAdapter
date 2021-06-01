@@ -6,7 +6,6 @@ package com.zrq.retrofit.adapter
  * @author zhangrq
  * createTime 2021/5/17 15:47
  */
-@Suppress("unused")
 sealed class ApiResponse<T> {
     data class Success<T>(val data: T?) : ApiResponse<T>()
 
@@ -17,9 +16,6 @@ sealed class ApiResponse<T> {
     }
 
     companion object {
-        //        fun <T> successEmpty() = Success.SuccessEmpty<T>()
-
-        //        fun <T> successNotNull(result: T) = Success.SuccessNotNull(data = result)
 
         fun <T> success(result: T?) = Success(result)
 

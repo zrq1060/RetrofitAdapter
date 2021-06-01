@@ -1,7 +1,7 @@
 package com.zrq.retrofit.adapter.coroutines
 
 import com.zrq.retrofit.adapter.ApiResponse
-import com.zrq.retrofit.adapter.ApiResponseCallHandle
+import com.zrq.retrofit.adapter.ApiResponseCallHandlerManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,14 +20,14 @@ class ApiResponseCallDelegate<T>(proxy: Call<T>, private val resultClass: Class<
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 callback.onResponse(
                     this@ApiResponseCallDelegate,
-                    Response.success(ApiResponseCallHandle.handleOnResponse(response, resultClass))
+                    Response.success(ApiResponseCallHandlerManager.handleOnResponse(response, resultClass))
                 )
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
                 callback.onResponse(
                     this@ApiResponseCallDelegate,
-                    Response.success(ApiResponseCallHandle.handleOnFailure(t, resultClass))
+                    Response.success(ApiResponseCallHandlerManager.handleOnFailure(t, resultClass))
                 )
             }
         }

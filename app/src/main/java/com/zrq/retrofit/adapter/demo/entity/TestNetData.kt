@@ -10,4 +10,8 @@ data class TestNetItem(val sid: String?, val text: String?)
 
 data class TestNetDes(val sid: String?, val name: String?, val text: String?)
 
-data class TestNetAllData(val testNetItem: List<TestNetItem>?, val testNetDes: TestNetDes?)
+data class TestNetAllData(
+    val testNetItemList: List<TestNetItem>?,
+    val testNetDes: TestNetDes?,
+    val feedArticleData: FeedArticleData?
+)

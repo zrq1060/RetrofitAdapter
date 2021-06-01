@@ -1,5 +1,8 @@
 package com.zrq.retrofit.adapter.demo
 
+import com.zrq.retrofit.adapter.ResponseCodeErrorException
+import java.net.UnknownHostException
+
 /**
  * 描述：网络异常相关
  *
@@ -9,3 +12,25 @@ package com.zrq.retrofit.adapter.demo
 class ResponseBodyEmptyException : RuntimeException("response body empty")
 
 class RulesException(message: String) : RuntimeException(message)
+
+const val CODE_EXCEPTION_UNKNOWN = -100 // unknown
+const val CODE_EXCEPTION_RESPONSE_CODE_ERROR = -101 // response code error
+const val CODE_EXCEPTION_RESPONSE_BODY_EMPTY = -102 // response body empty
+const val CODE_EXCEPTION_RULES_ERROR = -103 // rules error
+const val CODE_EXCEPTION_NETWORK_ERROR = -104 // network_error
+
+
+fun Throwable.toCodeMessage(): Pair<Int, String> {
+    return when (this) {
+        // 响应码错误
+        is ResponseCodeErrorException -> Pair(CODE_EXCEPTION_RESPONSE_CODE_ERROR, message.toString())
+        // 响应body为空
+        is ResponseBodyEmptyException -> Pair(CODE_EXCEPTION_RESPONSE_BODY_EMPTY, message.toString())
+        // 规则异常
+        is RulesException -> Pair(CODE_EXCEPTION_RULES_ERROR, message.toString())
+        // 无网络
+        is UnknownHostException -> Pair(CODE_EXCEPTION_NETWORK_ERROR, "no network")
+        // 未知
+        else -> Pair(CODE_EXCEPTION_UNKNOWN, "unknown Exception ${toString()}")
+    }
+}

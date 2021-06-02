@@ -58,7 +58,6 @@ inline fun <T> ApiResponse<T>.onException(crossinline onResult: ApiResponse.Fail
     return this
 }
 
-
 /**
  * 线性执行，当前成功后，执行[next]
  */

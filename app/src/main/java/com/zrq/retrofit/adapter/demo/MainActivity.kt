@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +17,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // observe
+        // findViewById
         val hintTv = findViewById<TextView>(R.id.hintTv)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        // observe
         viewModel.hintText.observe(this) { hintTv.text = it }
+        viewModel.loading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
         // buttons
         addButton("清除") { viewModel.clearHint() }
         addButton("返回ApiResponse_命令式处理") { viewModel.getBaseResultList_ApiResponse_Imperative() }

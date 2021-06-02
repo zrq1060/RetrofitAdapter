@@ -8,7 +8,10 @@ import retrofit2.Response
  * @author zhangrq
  * createTime 2021/5/17 11:54
  */
-interface ApiResponseCallHandler {
+interface ApiResponseResultHandler : ApiResponseResultShouldHandle, ApiResponseHandle
+interface ApiResponseAnnotationHandler : ApiResponseHandle
+
+interface ApiResponseResultShouldHandle {
     /**
      * 优先级，值越低优先级越高，值相同按先添加的先判断
      */
@@ -17,8 +20,10 @@ interface ApiResponseCallHandler {
     /**
      * 是否要处理，[resultClass]为[ApiResponse]的泛型类型
      */
-    fun isHandle(resultClass: Class<*>): Boolean
+    fun shouldHandle(resultClass: Class<*>): Boolean
+}
 
+interface ApiResponseHandle {
     /**
      * 处理onResponse，返回ApiResponse
      */

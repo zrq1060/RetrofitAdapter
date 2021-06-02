@@ -4,6 +4,7 @@ import com.zrq.retrofit.adapter.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type
+import kotlin.reflect.KClass
 
 /**
  * 描述：
@@ -11,14 +12,17 @@ import java.lang.reflect.Type
  * @author zhangrq
  * createTime 2021/5/17 15:42
  */
-class CoroutinesResponseCallAdapter(private val resultType: Type, private val resultClass: Class<*>) :
-    CallAdapter<Type, Call<ApiResponse<Type>>> {
+class CoroutinesResponseCallAdapter(
+    private val resultType: Type,
+    private val resultClass: Class<*>,
+    private val annotationValue: KClass<*>?
+) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
     override fun responseType(): Type {
         return resultType
     }
 
     override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
-        return ApiResponseCallDelegate(call, resultClass)
+        return ApiResponseCallDelegate(call, resultClass, annotationValue)
     }
 }

@@ -3,8 +3,8 @@ package com.zrq.retrofit.adapter.demo
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.demo.entity.BaseData
 import com.zrq.retrofit.adapter.demo.entity.BaseResult
-import com.zrq.retrofit.adapter.demo.handler.BaseDataApiResponseCallHandler
-import com.zrq.retrofit.adapter.demo.handler.BaseResultApiResponseCallHandler
+import com.zrq.retrofit.adapter.demo.handler.BaseDataApiResponseResultHandler
+import com.zrq.retrofit.adapter.demo.handler.BaseResultApiResponseResultHandler
 
 /**
  * 描述：转换成Result
@@ -28,14 +28,14 @@ fun <T> ApiResponse<T>.toResultNotNull() = toResultTransform(successTransform = 
 })
 
 /**
- * toResult，在[BaseDataApiResponseCallHandler]规则下，把[BaseData]的转换为[BaseData.data]
+ * toResult，在[BaseDataApiResponseResultHandler]规则下，把[BaseData]的转换为[BaseData.data]
  */
 fun <T> ApiResponse<BaseData<T>>.toResultBaseDataOfData() = toResultTransform(successTransform = {
     it!!.data!! // 此成功，已经判断了data不为空
 })
 
 /**
- * toResult，在[BaseResultApiResponseCallHandler]规则下，把[BaseResult]的转换为[BaseResult.result]
+ * toResult，在[BaseResultApiResponseResultHandler]规则下，把[BaseResult]的转换为[BaseResult.result]
  */
 fun <T> ApiResponse<BaseResult<T>>.toResultBaseResultOfResult() =
     toResultTransform(successTransform = {

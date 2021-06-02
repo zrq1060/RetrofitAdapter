@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class TestViewModel : ViewModel() {
     private val repository = TestRepository()
     val hintText = MutableLiveData<String>()
+    val loading = MutableLiveData(false)
 
     /**
      * 获取BaseResult的列表数据，返回ApiResponse，命令式处理
@@ -71,6 +72,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_Result() {
         viewModelScope.launch {
+            loading.value = true
             when (val result = repository.getBaseResultList_Result(1)) {
                 is Result.Success -> {
                     // 成功，返回数据为BaseResult，BaseResult可能为空
@@ -81,6 +83,7 @@ class TestViewModel : ViewModel() {
                     setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
                 }
             }
+            loading.value = false
         }
     }
 

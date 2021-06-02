@@ -1,6 +1,7 @@
 package com.zrq.retrofit.adapter.coroutines
 
 import com.zrq.retrofit.adapter.ApiResponse
+import com.zrq.retrofit.adapter.ApiResponseHandler
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
@@ -27,7 +28,9 @@ class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.F
                     ApiResponse::class.java -> {
                         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
                         val resultClass = getRawType(resultType) // Class
-                        CoroutinesResponseCallAdapter(resultType, resultClass)
+                        val annotationValue = annotations.firstOrNull { it is ApiResponseHandler }
+                            ?.let { (it as ApiResponseHandler).value }
+                        CoroutinesResponseCallAdapter(resultType, resultClass, annotationValue)
                     }
                     else -> null
                 }

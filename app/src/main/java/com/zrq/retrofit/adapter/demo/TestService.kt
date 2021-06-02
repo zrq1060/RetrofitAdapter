@@ -1,7 +1,9 @@
 package com.zrq.retrofit.adapter.demo
 
 import com.zrq.retrofit.adapter.ApiResponse
+import com.zrq.retrofit.adapter.ApiResponseHandler
 import com.zrq.retrofit.adapter.demo.entity.*
+import com.zrq.retrofit.adapter.demo.handler.NetworkApiResponseHandler
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,6 +19,7 @@ interface TestService {
      * 获取列表
      */
     @GET("getJoke")
+    @ApiResponseHandler(NetworkApiResponseHandler::class)
     suspend fun getJoke(@Query("page") page: Int): ApiResponse<BaseResult<List<TestNetItem>>>
 
     /**

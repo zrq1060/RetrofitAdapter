@@ -68,6 +68,49 @@ class TestViewModel : ViewModel() {
     }
 
     /**
+     * 获取BaseResult的列表数据，返回ApiResponse，指定ApiResponseHandler
+     */
+    fun getBaseResultList_ApiResponse_ApiResponseHandler() {
+        viewModelScope.launch {
+            repository.getBaseResultList_ApiResponse_ApiResponseHandler(1)
+                .onSuccess {
+                    // 成功，返回数据为BaseResult
+                    setResultHint("Success=${data?.result}")
+                }.onFailure {
+                    // 失败，包含Error、Exception
+                    setResultHint("Failure")
+                }.onError {
+                    // 失败-错误，服务器返回的错误code及message信息
+                    setResultHint("Failure=Error=code=${code}=message=${message}")
+                }.onException {
+                    // 失败-异常
+                    setResultHint("Failure=Exception=throwable=${throwable}")
+                }
+        }
+    }
+    /**
+     * 获取BaseResult的列表数据，返回ApiResponse，返回data为map转换后的
+     */
+    fun getBaseResultList_ApiResponse_Map() {
+        viewModelScope.launch {
+            repository.getBaseResultList_ApiResponse_Map(1)
+                .onSuccess {
+                    // 成功，返回数据为BaseResult内的result列表
+                    setResultHint("Success=${data!!}")
+                }.onFailure {
+                    // 失败，包含Error、Exception
+                    setResultHint("Failure")
+                }.onError {
+                    // 失败-错误，服务器返回的错误code及message信息
+                    setResultHint("Failure=Error=code=${code}=message=${message}")
+                }.onException {
+                    // 失败-异常
+                    setResultHint("Failure=Exception=throwable=${throwable}")
+                }
+        }
+    }
+
+    /**
      * 获取BaseResult的列表数据，返回Result，返回数据为BaseResult，BaseResult可能为空
      */
     fun getBaseResultList_Result() {

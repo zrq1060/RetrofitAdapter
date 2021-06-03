@@ -6,6 +6,7 @@ import com.zrq.retrofit.adapter.asyncAll
 import com.zrq.retrofit.adapter.coroutines.CoroutinesResponseCallAdapterFactory
 import com.zrq.retrofit.adapter.demo.entity.*
 import com.zrq.retrofit.adapter.linear
+import com.zrq.retrofit.adapter.map
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @author zhangrq
  * createTime 2021/5/17 14:22
  */
-@Suppress("FunctionName")
+@Suppress("FunctionName", "UNCHECKED_CAST")
 class TestRepository {
 
     private val api: TestService = Retrofit.Builder()
@@ -29,6 +30,13 @@ class TestRepository {
     suspend fun getBaseResultList_ApiResponse(page: Int): ApiResponse<BaseResult<List<TestNetItem>>> {
         return api.getJoke(page)
     }
+
+    suspend fun getBaseResultList_ApiResponse_ApiResponseHandler(page: Int): ApiResponse<BaseResult<List<TestNetItem>>> {
+        return api.getJokeUseApiResponseHandler(page)
+    }
+
+    suspend fun getBaseResultList_ApiResponse_Map(page: Int) =
+        api.getJoke(page).map { it!!.result!! }
 
     suspend fun getBaseResultList_Result(page: Int): Result<BaseResult<List<TestNetItem>>?> {
         return api.getJoke(page).toResult()

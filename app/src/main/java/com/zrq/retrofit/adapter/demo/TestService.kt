@@ -19,8 +19,14 @@ interface TestService {
      * 获取列表
      */
     @GET("getJoke")
-    @ApiResponseHandler(NetworkApiResponseHandler::class)
     suspend fun getJoke(@Query("page") page: Int): ApiResponse<BaseResult<List<TestNetItem>>>
+
+    /**
+     * 获取列表
+     */
+    @GET("getJoke")
+    @ApiResponseHandler(NetworkApiResponseHandler::class)
+    suspend fun getJokeUseApiResponseHandler(@Query("page") page: Int): ApiResponse<BaseResult<List<TestNetItem>>>
 
     /**
      * 获取详情

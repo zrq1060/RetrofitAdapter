@@ -58,6 +58,20 @@ inline fun <T> ApiResponse<T>.onException(crossinline onResult: ApiResponse.Fail
     return this
 }
 
+fun <T, R> ApiResponse<T>.map(mapper: (T?) -> R): ApiResponse<R> {
+    return when (this) {
+        is ApiResponse.Success -> {
+            ApiResponse.success(mapper(this.data))
+        }
+        is ApiResponse.Failure.Error -> {
+            ApiResponse.error(code, message)
+        }
+        is ApiResponse.Failure.Exception -> {
+            ApiResponse.exception(throwable)
+        }
+    }
+}
+
 /**
  * 线性执行，当前成功后，执行[next]
  */

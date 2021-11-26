@@ -53,7 +53,9 @@ data class BaseData<T>(val code: Int?, val message: String?, val data: T?)
 
 ### 4.声明规则
 
-声明规则，使其对`返回值类型`为`XXX`的网络请求响应结果进行处理，如对上面的`BaseData`为例，进行处理，代码如下（**！！！看注释**）：
+声明规则，使其对`返回值类型`为`XXX`的网络响应结果进行处理，如以上面的例子为例，`BaseData`作为`返回值类型`，进行处理，代码如下（**！！！看注释**）：
+
+> 例子规则：`网络成功`并且`code为200`并且`data不为空`，则代表成功（`Success`）。 `网络成功`并且`code不为200`，则代表失败（`Error`）。`网络失败`、`ResponseCode失败`、`ResponseBody为空`等，则代表异常（`Exception`）。
 
 ```kotlin
 class BaseDataApiResponseResultHandler : ApiResponseResultHandler {
@@ -119,12 +121,8 @@ class BaseDataApiResponseResultHandler : ApiResponseResultHandler {
 }
 ```
 
-> 说明：
-> `ApiResponse`为API响应类。含有子类`Success`、`Error`、`Exception`三种结果。 分别代表着成功、失败、异常。
-> 如上面的例子：
-> `网络成功`并且`code为200`并且`data不为空`，则代表`Success`（成功）。
-> `网络成功`并且`code不为200`，则代表`Error`（失败）。
-> `网络失败`、`ResponseCode失败`、`ResponseBody为空`等，则代表`Exception`（异常）。
+> 说明：`ApiResponse`为API响应类。含有子类`Success`、`Error`、`Exception`三种结果。 分别代表着成功、失败、异常。
+
 
 ### 5.添加规则
 
@@ -177,4 +175,3 @@ viewModelScope.launch {
     }
 }
 ```
-

@@ -1,5 +1,6 @@
 package com.zrq.retrofit.adapter
 
+import com.zrq.retrofit.adapter.exception.ResponseCodeErrorException
 import retrofit2.Response
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
@@ -19,7 +20,7 @@ object ApiResponseHandlerManager {
             apiResponseResultHandlers.add(handler)
         }
         // 增加的时候排序，以优化使用时排序
-        apiResponseResultHandlers.sortBy { it.priority() }
+        apiResponseResultHandlers.sortByDescending { it.priority() }
     }
 
     fun removeApiResponseResultHandler(handler: ApiResponseResultHandler) {

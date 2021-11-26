@@ -1,6 +1,7 @@
 package com.zrq.retrofit.adapter.demo.handler
 
 import com.zrq.retrofit.adapter.*
+import com.zrq.retrofit.adapter.exception.ResponseCodeErrorException
 import retrofit2.Response
 
 /**

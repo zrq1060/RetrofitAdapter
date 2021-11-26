@@ -1,10 +1,10 @@
 package com.zrq.retrofit.adapter.demo
 
 import com.zrq.retrofit.adapter.ApiResponse
-import com.zrq.retrofit.adapter.demo.entity.BaseData
-import com.zrq.retrofit.adapter.demo.entity.BaseResult
-import com.zrq.retrofit.adapter.demo.handler.BaseDataApiResponseResultHandler
-import com.zrq.retrofit.adapter.demo.handler.BaseResultApiResponseResultHandler
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseData
+import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseResult
+import com.zrq.retrofit.adapter.demo.handler.WanAndroidBaseDataApiResponseResultHandler
+import com.zrq.retrofit.adapter.demo.handler.ApiOpenBaseResultApiResponseResultHandler
 
 /**
  * 描述：转换成Result
@@ -28,16 +28,16 @@ fun <T> ApiResponse<T>.toResultNotNull() = toResultTransform(successTransform = 
 })
 
 /**
- * toResult，在[BaseDataApiResponseResultHandler]规则下，把[BaseData]的转换为[BaseData.data]
+ * toResult，在[WanAndroidBaseDataApiResponseResultHandler]规则下，把[WanAndroidBaseData]的转换为[WanAndroidBaseData.data]
  */
-fun <T> ApiResponse<BaseData<T>>.toResultBaseDataOfData() = toResultTransform(successTransform = {
+fun <T> ApiResponse<WanAndroidBaseData<T>>.toResultBaseDataOfData() = toResultTransform(successTransform = {
     it!!.data!! // 此成功，已经判断了data不为空
 })
 
 /**
- * toResult，在[BaseResultApiResponseResultHandler]规则下，把[BaseResult]的转换为[BaseResult.result]
+ * toResult，在[ApiOpenBaseResultApiResponseResultHandler]规则下，把[ApiOpenBaseResult]的转换为[ApiOpenBaseResult.result]
  */
-fun <T> ApiResponse<BaseResult<T>>.toResultBaseResultOfResult() =
+fun <T> ApiResponse<ApiOpenBaseResult<T>>.toResultBaseResultOfResult() =
     toResultTransform(successTransform = {
         it!!.result!! // 此成功，已经判断了result不为空
     })

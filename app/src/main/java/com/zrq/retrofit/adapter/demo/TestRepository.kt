@@ -4,7 +4,12 @@ import android.text.TextUtils
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.asyncAll
 import com.zrq.retrofit.adapter.coroutines.CoroutinesResponseCallAdapterFactory
-import com.zrq.retrofit.adapter.demo.entity.*
+import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseResult
+import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetAllData
+import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetDes
+import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetItem
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.FeedArticleData
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseData
 import com.zrq.retrofit.adapter.linear
 import com.zrq.retrofit.adapter.map
 import retrofit2.Retrofit
@@ -27,22 +32,22 @@ class TestRepository {
         .create(TestService::class.java)
 
     /* -------------------BaseResult------------------- */
-    suspend fun getBaseResultList_ApiResponse(page: Int): ApiResponse<BaseResult<List<TestNetItem>>> {
+    suspend fun getBaseResultList_ApiResponse(page: Int): ApiResponse<ApiOpenBaseResult<List<TestNetItem>>> {
         return api.getJoke(page)
     }
 
-    suspend fun getBaseResultList_ApiResponse_ApiResponseHandler(page: Int): ApiResponse<BaseResult<List<TestNetItem>>> {
+    suspend fun getBaseResultList_ApiResponse_ApiResponseHandler(page: Int): ApiResponse<ApiOpenBaseResult<List<TestNetItem>>> {
         return api.getJokeUseApiResponseHandler(page)
     }
 
     suspend fun getBaseResultList_ApiResponse_Map(page: Int) =
         api.getJoke(page).map { it!!.result!! }
 
-    suspend fun getBaseResultList_Result(page: Int): Result<BaseResult<List<TestNetItem>>?> {
+    suspend fun getBaseResultList_Result(page: Int): Result<ApiOpenBaseResult<List<TestNetItem>>?> {
         return api.getJoke(page).toResult()
     }
 
-    suspend fun getBaseResultList_Result_NotNull(page: Int): Result<BaseResult<List<TestNetItem>>> {
+    suspend fun getBaseResultList_Result_NotNull(page: Int): Result<ApiOpenBaseResult<List<TestNetItem>>> {
         return api.getJoke(page).toResultNotNull()
     }
 
@@ -51,7 +56,7 @@ class TestRepository {
     }
 
     /* -------------------BaseData------------------- */
-    suspend fun getBaseDataData_ApiResponse(page: Int): ApiResponse<BaseData<FeedArticleData>> {
+    suspend fun getBaseDataData_ApiResponse(page: Int): ApiResponse<WanAndroidBaseData<FeedArticleData>> {
         return api.getFeedArticleList(page)
     }
 
@@ -89,9 +94,9 @@ class TestRepository {
             { api.getFeedArticleList(page) },// 接口C
             onSuccess = { values ->
                 // 为了演示使用方便，这里没有判断
-                val testNetItemList = (values[0] as? BaseResult<List<TestNetItem>>)?.result
-                val testNetDes = (values[1] as? BaseResult<TestNetDes>)?.result
-                val feedArticleData = (values[2] as? BaseData<FeedArticleData>)?.data
+                val testNetItemList = (values[0] as? ApiOpenBaseResult<List<TestNetItem>>)?.result
+                val testNetDes = (values[1] as? ApiOpenBaseResult<TestNetDes>)?.result
+                val feedArticleData = (values[2] as? WanAndroidBaseData<FeedArticleData>)?.data
                 ApiResponse.success(TestNetAllData(testNetItemList, testNetDes, feedArticleData))
             }).toResult()
 
@@ -103,11 +108,11 @@ class TestRepository {
             onSuccess = { values ->
                 // 为了演示使用方便，这里没有判断
                 // -A成功，走的BaseResultApiResponseCallHandler规则，result一定不为空
-                val testNetItemList = (values[0] as BaseResult<List<TestNetItem>>).result!!
+                val testNetItemList = (values[0] as ApiOpenBaseResult<List<TestNetItem>>).result!!
                 // -B成功，走的BaseResultApiResponseCallHandler规则，result一定不为空
-                val testNetDes = (values[1] as BaseResult<TestNetDes>).result!!
+                val testNetDes = (values[1] as ApiOpenBaseResult<TestNetDes>).result!!
                 // -C成功，走的BaseDataApiResponseCallHandler规则，data一定不为空
-                val feedArticleData = (values[2] as BaseData<FeedArticleData>).data!!
+                val feedArticleData = (values[2] as WanAndroidBaseData<FeedArticleData>).data!!
                 ApiResponse.success(TestNetAllData(testNetItemList, testNetDes, feedArticleData))
             }).toResultNotNull()
 }

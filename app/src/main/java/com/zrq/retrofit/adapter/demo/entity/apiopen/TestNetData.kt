@@ -1,4 +1,6 @@
-package com.zrq.retrofit.adapter.demo.entity
+package com.zrq.retrofit.adapter.demo.entity.apiopen
+
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.FeedArticleData
 
 /**
  * 描述：

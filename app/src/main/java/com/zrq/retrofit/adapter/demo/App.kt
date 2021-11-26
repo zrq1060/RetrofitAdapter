@@ -2,8 +2,8 @@ package com.zrq.retrofit.adapter.demo
 
 import androidx.multidex.MultiDexApplication
 import com.zrq.retrofit.adapter.ApiResponseHandlerManager
-import com.zrq.retrofit.adapter.demo.handler.BaseDataApiResponseResultHandler
-import com.zrq.retrofit.adapter.demo.handler.BaseResultApiResponseResultHandler
+import com.zrq.retrofit.adapter.demo.handler.ApiOpenBaseResultApiResponseResultHandler
+import com.zrq.retrofit.adapter.demo.handler.WanAndroidBaseDataApiResponseResultHandler
 
 /**
  * 描述：
@@ -15,7 +15,9 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         // 增加自定义规则
-        ApiResponseHandlerManager.addApiResponseResultHandler(BaseDataApiResponseResultHandler())
-        ApiResponseHandlerManager.addApiResponseResultHandler(BaseResultApiResponseResultHandler())
+        // -WanAndroid的网络请求规则
+        ApiResponseHandlerManager.addApiResponseResultHandler(WanAndroidBaseDataApiResponseResultHandler())
+        // -ApiOpen的网络请求规则
+        ApiResponseHandlerManager.addApiResponseResultHandler(ApiOpenBaseResultApiResponseResultHandler())
     }
 }

@@ -13,7 +13,7 @@ interface ApiResponseAnnotationHandler : ApiResponseHandle
 
 interface ApiResponseResultShouldHandle {
     /**
-     * 优先级，值越低优先级越高，值相同按先添加的先判断
+     * 优先级，值越大优先级越高，值相同按先添加的先判断
      */
     fun priority(): Int
 

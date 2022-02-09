@@ -15,7 +15,7 @@ object ApiResponseHandlerManager {
     private val apiResponseResultHandlers = arrayListOf<ApiResponseResultHandler>()
     private val annotationHandlers = mutableMapOf<KClass<*>, ApiResponseAnnotationHandler>()
 
-    fun addApiResponseResultHandler(handler: ApiResponseResultHandler) {
+    fun add(handler: ApiResponseResultHandler) = apply {
         if (!apiResponseResultHandlers.contains(handler)) {
             apiResponseResultHandlers.add(handler)
         }
@@ -23,13 +23,13 @@ object ApiResponseHandlerManager {
         apiResponseResultHandlers.sortByDescending { it.priority() }
     }
 
-    fun removeApiResponseResultHandler(handler: ApiResponseResultHandler) {
+    fun remove(handler: ApiResponseResultHandler) = apply {
         if (apiResponseResultHandlers.contains(handler)) {
             apiResponseResultHandlers.remove(handler)
         }
     }
 
-    fun clearApiResponseResultHandler() {
+    fun clear() = apply {
         if (apiResponseResultHandlers.isNotEmpty()) {
             apiResponseResultHandlers.clear()
         }

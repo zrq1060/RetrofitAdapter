@@ -15,9 +15,8 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         // 增加自定义规则
-        // -WanAndroid的网络请求规则
-        ApiResponseHandlerManager.addApiResponseResultHandler(WanAndroidBaseDataApiResponseResultHandler())
-        // -ApiOpen的网络请求规则
-        ApiResponseHandlerManager.addApiResponseResultHandler(ApiOpenBaseResultApiResponseResultHandler())
+        ApiResponseHandlerManager
+            .add(WanAndroidBaseDataApiResponseResultHandler()) // -WanAndroid的网络请求规则
+            .add(ApiOpenBaseResultApiResponseResultHandler()) // -ApiOpen的网络请求规则
     }
 }

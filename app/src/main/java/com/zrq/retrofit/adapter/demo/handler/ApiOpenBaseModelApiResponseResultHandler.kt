@@ -3,24 +3,24 @@ package com.zrq.retrofit.adapter.demo.handler
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.ApiResponseResultHandler
 import com.zrq.retrofit.adapter.demo.RulesException
-import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseResult
+import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseModel
 import com.zrq.retrofit.adapter.exception.ResponseBodyEmptyException
 import com.zrq.retrofit.adapter.exception.ResponseCodeErrorException
 import retrofit2.Response
 
 /**
- * 描述：[ApiOpenBaseResult]逻辑处理类，返回值不为空，并且[ApiOpenBaseResult.code]为200，并且[ApiOpenBaseResult.result]不为空，代表成功
+ * 描述：[ApiOpenBaseModel]逻辑处理类，返回值不为空，并且[ApiOpenBaseModel.code]为200，并且[ApiOpenBaseModel.result]不为空，代表成功
  *
  * @author zhangrq
  * createTime 2021/5/17 15:15
  */
-class ApiOpenBaseResultApiResponseResultHandler : ApiResponseResultHandler {
+class ApiOpenBaseModelApiResponseResultHandler : ApiResponseResultHandler {
     override fun priority(): Int {
         return 0
     }
 
     override fun shouldHandle(resultClass: Class<*>): Boolean {
-        return resultClass == ApiOpenBaseResult::class.java
+        return resultClass == ApiOpenBaseModel::class.java
     }
 
     override fun <T> handleOnResponse(response: Response<T>): ApiResponse<T> {
@@ -29,7 +29,7 @@ class ApiOpenBaseResultApiResponseResultHandler : ApiResponseResultHandler {
             val body = response.body()
             if (body != null) {
                 // body不为空
-                val baseResult = body as ApiOpenBaseResult<*>
+                val baseResult = body as ApiOpenBaseModel<*>
                 val baseResultCode = baseResult.code
                 if (baseResultCode == 200) {
                     // 公司规则成功

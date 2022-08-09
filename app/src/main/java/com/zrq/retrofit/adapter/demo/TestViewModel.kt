@@ -24,7 +24,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_ApiResponse_Imperative() {
         viewModelScope.launch {
-            when (val result = repository.getBaseResultList_ApiResponse(1)) {
+            when (val result = repository.getApiOpenList_ApiResponse(1)) {
                 is ApiResponse.Success -> {
                     // 成功，返回数据为BaseResult
                     setResultHint("Success=${result.data?.result}")
@@ -50,7 +50,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_ApiResponse_Declarative() {
         viewModelScope.launch {
-            repository.getBaseResultList_ApiResponse(1)
+            repository.getApiOpenList_ApiResponse(1)
                 .onSuccess {
                     // 成功，返回数据为BaseResult
                     setResultHint("Success=${data?.result}")
@@ -72,7 +72,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_ApiResponse_ApiResponseHandler() {
         viewModelScope.launch {
-            repository.getBaseResultList_ApiResponse_ApiResponseHandler(1)
+            repository.getApiOpenList_ApiResponse_ApiResponseHandler(1)
                 .onSuccess {
                     // 成功，返回数据为BaseResult
                     setResultHint("Success=${data?.result}")
@@ -93,7 +93,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_ApiResponse_Map() {
         viewModelScope.launch {
-            repository.getBaseResultList_ApiResponse_Map(1)
+            repository.getApiOpenList_ApiResponse_Map(1)
                 .onSuccess {
                     // 成功，返回数据为BaseResult内的result列表
                     setResultHint("Success=${data!!}")
@@ -116,7 +116,7 @@ class TestViewModel : ViewModel() {
     fun getBaseResultList_Result() {
         viewModelScope.launch {
             loading.value = true
-            when (val result = repository.getBaseResultList_Result(1)) {
+            when (val result = repository.getApiOpenList_Result(1)) {
                 is Result.Success -> {
                     // 成功，返回数据为BaseResult，BaseResult可能为空
                     setResultHint("Success=${result.data?.result}")
@@ -135,7 +135,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_Result_NotNull() {
         viewModelScope.launch {
-            when (val result = repository.getBaseResultList_Result_NotNull(1)) {
+            when (val result = repository.getApiOpenList_Result_NotNull(1)) {
                 is Result.Success -> {
                     // 成功，返回数据为BaseResult，BaseResult不为空
                     setResultHint("Success=${result.data.result}")
@@ -153,7 +153,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseResultList_Result_BaseResultOfResult() {
         viewModelScope.launch {
-            when (val result = repository.getBaseResultList_Result_BaseResultOfResult(1)) {
+            when (val result = repository.getApiOpenList_Result_ApiOpen(1)) {
                 is Result.Success -> {
                     // 成功，返回数据为BaseResult内的result
                     setResultHint("Success=${result.data}")
@@ -171,7 +171,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseDataData_ApiResponse_Imperative() {
         viewModelScope.launch {
-            when (val result = repository.getBaseDataData_ApiResponse(1)) {
+            when (val result = repository.getWanAndroidList_ApiResponse(1)) {
                 is ApiResponse.Success -> {
                     // 成功，返回数据为BaseData，BaseData可能为空
                     setResultHint("Success=${result.data?.data}")
@@ -189,7 +189,7 @@ class TestViewModel : ViewModel() {
      */
     fun getBaseDataData_Result_BaseDataOfData() {
         viewModelScope.launch {
-            when (val result = repository.getBaseDataData_Result_BaseDataOfData(1)) {
+            when (val result = repository.getWanAndroidList_Result_WanAndroid(1)) {
                 is Result.Success -> {
                     // 成功，返回数据为BaseData内的data
                     setResultHint("Success=${result.data}")
@@ -207,16 +207,16 @@ class TestViewModel : ViewModel() {
      */
     fun getABLinearSimple() {
         viewModelScope.launch {
-            when (val result = repository.getABLinearSimple(1)) {
-                is Result.Success -> {
-                    // 成功，返回数据为第二个接口的BaseResult
-                    setResultHint("Success=${result.data?.result}")
-                }
-                is Result.Failure -> {
-                    // 失败
-                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
-                }
-            }
+//            when (val result = repository.getABLinearSimple(1)) {
+//                is Result.Success -> {
+//                    // 成功，返回数据为第二个接口的BaseResult
+//                    setResultHint("Success=${result.data?.result}")
+//                }
+//                is Result.Failure -> {
+//                    // 失败
+//                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
+//                }
+//            }
         }
     }
 
@@ -225,16 +225,16 @@ class TestViewModel : ViewModel() {
      */
     fun getABLinear() {
         viewModelScope.launch {
-            when (val result = repository.getABLinear(1)) {
-                is Result.Success -> {
-                    // 成功，返回数据为第二个接口的BaseResult内result
-                    setResultHint("Success=${result.data}")
-                }
-                is Result.Failure -> {
-                    // 失败
-                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
-                }
-            }
+//            when (val result = repository.getABLinear(1)) {
+//                is Result.Success -> {
+//                    // 成功，返回数据为第二个接口的BaseResult内result
+//                    setResultHint("Success=${result.data}")
+//                }
+//                is Result.Failure -> {
+//                    // 失败
+//                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
+//                }
+//            }
         }
     }
 
@@ -243,16 +243,16 @@ class TestViewModel : ViewModel() {
      */
     fun getABCAsyncSimple() {
         viewModelScope.launch {
-            when (val result = repository.getABCAsyncSimple(1)) {
-                is Result.Success -> {
-                    // 成功，返回数据为三个接口数据的集合TestNetAllData。
-                    setResultHint("Success=${result.data}")
-                }
-                is Result.Failure -> {
-                    // 失败
-                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
-                }
-            }
+//            when (val result = repository.getABCAsyncSimple(1)) {
+//                is Result.Success -> {
+//                    // 成功，返回数据为三个接口数据的集合TestNetAllData。
+//                    setResultHint("Success=${result.data}")
+//                }
+//                is Result.Failure -> {
+//                    // 失败
+//                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
+//                }
+//            }
         }
     }
 
@@ -261,16 +261,16 @@ class TestViewModel : ViewModel() {
      */
     fun getABCAsync() {
         viewModelScope.launch {
-            when (val result = repository.getABCAsync(1)) {
-                is Result.Success -> {
-                    // 成功，返回数据为三个接口数据的集合TestNetAllData。
-                    setResultHint("Success=${result.data}")
-                }
-                is Result.Failure -> {
-                    // 失败
-                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
-                }
-            }
+//            when (val result = repository.getABCAsync(1)) {
+//                is Result.Success -> {
+//                    // 成功，返回数据为三个接口数据的集合TestNetAllData。
+//                    setResultHint("Success=${result.data}")
+//                }
+//                is Result.Failure -> {
+//                    // 失败
+//                    setResultHint("Failure=isError=${result.isError}=code=${result.code}=message=${result.message}")
+//                }
+//            }
         }
     }
 

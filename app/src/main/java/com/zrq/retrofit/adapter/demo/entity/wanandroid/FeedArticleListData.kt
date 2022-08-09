@@ -6,7 +6,7 @@ package com.zrq.retrofit.adapter.demo.entity.wanandroid
  * @author zhangrq
  * createTime 2021/5/17 16:45
  */
-data class FeedArticleData(
+data class FeedArticleListData(
     val curPage: Int?,
     val datas: List<FeedArticleItemData>?,
     val offset: Int?,

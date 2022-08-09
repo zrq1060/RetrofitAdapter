@@ -4,12 +4,12 @@ import android.text.TextUtils
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.asyncAll
 import com.zrq.retrofit.adapter.coroutines.CoroutinesResponseCallAdapterFactory
-import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseResult
+import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseModel
 import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetAllData
 import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetDes
 import com.zrq.retrofit.adapter.demo.entity.apiopen.TestNetItem
-import com.zrq.retrofit.adapter.demo.entity.wanandroid.FeedArticleData
-import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseData
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.FeedArticleListData
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseModel
 import com.zrq.retrofit.adapter.linear
 import com.zrq.retrofit.adapter.map
 import retrofit2.Retrofit
@@ -31,49 +31,53 @@ class TestRepository {
         .build()
         .create(TestService::class.java)
 
-    /* -------------------BaseResult------------------- */
-    suspend fun getBaseResultList_ApiResponse(page: Int): ApiResponse<ApiOpenBaseResult<List<TestNetItem>>> {
-        return api.getJoke(page)
-    }
+    /* -------------------ApiOpen接口------------------- */
+    // 获取ApiOpen接口列表数据，返回ApiResponse。
+    suspend fun getApiOpenList_ApiResponse(page: Int, size: Int = 10) =
+        api.getImages(page, size)
 
-    suspend fun getBaseResultList_ApiResponse_ApiResponseHandler(page: Int): ApiResponse<ApiOpenBaseResult<List<TestNetItem>>> {
-        return api.getJokeUseApiResponseHandler(page)
-    }
+    // 获取ApiOpen接口列表数据，返回ApiResponse，并指定规则。
+    suspend fun getApiOpenList_ApiResponse_ApiResponseHandler(page: Int, size: Int = 10) =
+        api.getImagesApiResponseHandler(page, size)
 
-    suspend fun getBaseResultList_ApiResponse_Map(page: Int) =
-        api.getJoke(page).map { it!!.result!! }
+    // 获取ApiOpen接口列表数据，返回ApiResponse，并成功后直接获取map转换后的值（此为内部的list）。
+    suspend fun getApiOpenList_ApiResponse_Map(page: Int, size: Int = 10) =
+        api.getImages(page, size).map { it?.result?.list }
 
-    suspend fun getBaseResultList_Result(page: Int): Result<ApiOpenBaseResult<List<TestNetItem>>?> {
-        return api.getJoke(page).toResult()
-    }
+    // 获取ApiOpen接口列表数据，返回Result。
+    // -为什么ApiResponse要转换为Result？
+    // --因为Repository类内部网络请求可能使用ApiResponse作为返回数据、可能使用直接返回的结果作为返回数据、可能使用的数据库的结果作为返回数据，达不到统一，
+    // --为了统一，所以需要使用Result类，作为统一Repository类方法返回值标准。
+    suspend fun getApiOpenList_Result(page: Int, size: Int = 10) =
+        api.getImages(page, size).toResult()
 
-    suspend fun getBaseResultList_Result_NotNull(page: Int): Result<ApiOpenBaseResult<List<TestNetItem>>> {
-        return api.getJoke(page).toResultNotNull()
-    }
+    // 获取ApiOpen接口列表数据，返回Result。并且成功的Result.Success内的data不为空。
+    suspend fun getApiOpenList_Result_NotNull(page: Int, size: Int = 10) =
+        api.getImages(page, size).toResultNotNull()
 
-    suspend fun getBaseResultList_Result_BaseResultOfResult(page: Int): Result<List<TestNetItem>> {
-        return api.getJoke(page).toResultBaseResultOfResult()
-    }
+    // 获取ApiOpen接口列表数据，返回Result。并且成功的Result.Success内的data（ApiOpenBaseModel）内的result不为空。
+    suspend fun getApiOpenList_Result_ApiOpen(page: Int, size: Int = 10) =
+        api.getImages(page, size).toResultApiOpen()
 
-    /* -------------------BaseData------------------- */
-    suspend fun getBaseDataData_ApiResponse(page: Int): ApiResponse<WanAndroidBaseData<FeedArticleData>> {
-        return api.getFeedArticleList(page)
-    }
+    /* -------------------WanAndroid接口------------------- */
+    // 获取WanAndroid接口列表数据，返回ApiResponse。
+    suspend fun getWanAndroidList_ApiResponse(page: Int) =
+        api.getFeedArticleList(page)
 
-    suspend fun getBaseDataData_Result_BaseDataOfData(page: Int): Result<FeedArticleData> {
-        return api.getFeedArticleList(page).toResultBaseDataOfData()
-    }
+    // 获取WanAndroid接口列表数据，返回Result。并且成功的Result.Success内的data（WanAndroidBaseModel）内的data不为空。
+    suspend fun getWanAndroidList_Result_WanAndroid(page: Int) =
+        api.getFeedArticleList(page).toResultWanAndroid()
 
     /* -------------------A、B线性依次执行，返回B的数据------------------- */
     /**
      * [linear]可链接多个，例如：api.getA().linear{ api.getB() }.linear{ api.getC() }
      */
-    suspend fun getABLinearSimple(page: Int) = api.getJoke(page).linear {
+    suspend fun getABLinearSimple(page: Int) = api.getImages(page).linear {
         // 为了演示使用方便，这里没有判空
         api.getSingleJoke(this!!.result!!.first().sid!!)
     }.toResult()
 
-    suspend fun getABLinear(page: Int) = api.getJoke(page).linear {
+    suspend fun getABLinear(page: Int) = api.getImages(page).linear {
         // 为了演示使用方便，这里没有判空
         val sid = this?.result?.firstOrNull()?.sid ?: ""
         if (!TextUtils.isEmpty(sid)) {
@@ -83,36 +87,50 @@ class TestRepository {
             // 数据不ok，返回失败
             ApiResponse.exception(RulesException(""))
         }
-    }.toResultBaseResultOfResult()
+    }.toResultApiOpen()
 
 
     /* -------------------A、B、C并发执行，返回三个的整体数据------------------- */
     suspend fun getABCAsyncSimple(page: Int) =
         asyncAll(
-            { api.getJoke(page) },// 接口A
+            { api.getImages(page) },// 接口A
             { api.getSingleJoke("31577089") },// 接口B
             { api.getFeedArticleList(page) },// 接口C
             onSuccess = { values ->
                 // 为了演示使用方便，这里没有判断
-                val testNetItemList = (values[0] as? ApiOpenBaseResult<List<TestNetItem>>)?.result
-                val testNetDes = (values[1] as? ApiOpenBaseResult<TestNetDes>)?.result
-                val feedArticleData = (values[2] as? WanAndroidBaseData<FeedArticleData>)?.data
-                ApiResponse.success(TestNetAllData(testNetItemList, testNetDes, feedArticleData))
+                val testNetItemList = (values[0] as? ApiOpenBaseModel<List<TestNetItem>>)?.result
+                val testNetDes = (values[1] as? ApiOpenBaseModel<TestNetDes>)?.result
+                val feedArticleListData =
+                    (values[2] as? WanAndroidBaseModel<FeedArticleListData>)?.data
+                ApiResponse.success(
+                    TestNetAllData(
+                        testNetItemList,
+                        testNetDes,
+                        feedArticleListData
+                    )
+                )
             }).toResult()
 
     suspend fun getABCAsync(page: Int) =
         asyncAll(
-            { api.getJoke(page) },// 接口A
+            { api.getImages(page) },// 接口A
             { api.getSingleJoke("31577089") },// 接口B
             { api.getFeedArticleList(page) },// 接口C
             onSuccess = { values ->
                 // 为了演示使用方便，这里没有判断
                 // -A成功，走的BaseResultApiResponseCallHandler规则，result一定不为空
-                val testNetItemList = (values[0] as ApiOpenBaseResult<List<TestNetItem>>).result!!
+                val testNetItemList = (values[0] as ApiOpenBaseModel<List<TestNetItem>>).result!!
                 // -B成功，走的BaseResultApiResponseCallHandler规则，result一定不为空
-                val testNetDes = (values[1] as ApiOpenBaseResult<TestNetDes>).result!!
+                val testNetDes = (values[1] as ApiOpenBaseModel<TestNetDes>).result!!
                 // -C成功，走的BaseDataApiResponseCallHandler规则，data一定不为空
-                val feedArticleData = (values[2] as WanAndroidBaseData<FeedArticleData>).data!!
-                ApiResponse.success(TestNetAllData(testNetItemList, testNetDes, feedArticleData))
+                val feedArticleListData =
+                    (values[2] as WanAndroidBaseModel<FeedArticleListData>).data!!
+                ApiResponse.success(
+                    TestNetAllData(
+                        testNetItemList,
+                        testNetDes,
+                        feedArticleListData
+                    )
+                )
             }).toResultNotNull()
 }

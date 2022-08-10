@@ -1,6 +1,7 @@
 package com.zrq.retrofit.adapter.demo
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -9,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updatePadding
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: TestViewModel by viewModels()
@@ -28,23 +30,22 @@ class MainActivity : AppCompatActivity() {
         // buttons
         addButton("清除") { viewModel.clearHint() }
         setMargin()
-        addButton("返回ApiResponse_命令式处理") { viewModel.getBaseResultList_ApiResponse_Imperative() }
-        addButton("返回ApiResponse_声明式处理") { viewModel.getBaseResultList_ApiResponse_Declarative() }
+        addButton("ApiOpen接口_返回ApiResponse_命令式处理") { viewModel.getApiOpenList_ApiResponse_Imperative() }
+        addButton("ApiOpen接口_返回ApiResponse_声明式处理") { viewModel.getApiOpenList_ApiResponse_Declarative() }
         setMargin()
-        addButton("返回ApiResponse_指定ApiResponseHandler") { viewModel.getBaseResultList_ApiResponse_ApiResponseHandler() }
-        addButton("返回ApiResponse_map转化处理") { viewModel.getBaseResultList_ApiResponse_Map() }
+        addButton("ApiOpen接口_返回ApiResponse_指定规则") { viewModel.getApiOpenList_ApiResponse_ApiResponseHandler() }
+        addButton("ApiOpen接口_返回ApiResponse_map转化处理") { viewModel.getApiOpenList_ApiResponse_Map() }
         setMargin()
-        addButton("返回Result") { viewModel.getBaseResultList_Result() }
-        addButton("返回Result_不为空") { viewModel.getBaseResultList_Result_NotNull() }
-        addButton("返回Result_数据为BaseResult内result") { viewModel.getBaseResultList_Result_BaseResultOfResult() }
+        addButton("ApiOpen接口_返回Result") { viewModel.getApiOpenList_Result() }
+        addButton("ApiOpen接口_返回Result_不为空") { viewModel.getApiOpenList_Result_NotNull() }
+        addButton("ApiOpen接口_返回Result_指定返回值") { viewModel.getApiOpenList_Result_ApiOpen() }
         setMargin()
-        addButton("返回ApiResponse_命令式处理_BaseData") { viewModel.getBaseDataData_ApiResponse_Imperative() }
-        addButton("返回Result_数据为BaseData内data") { viewModel.getBaseDataData_Result_BaseDataOfData() }
+        addButton("WanAndroid接口_返回ApiResponse_命令式处理") { viewModel.getWanAndroidList_ApiResponse_Imperative() }
+        addButton("WanAndroid接口_返回Result_指定返回值") { viewModel.getWanAndroidList_Result_WanAndroid() }
         setMargin()
         addButton("获取A、B线性执行的结果-简单") { viewModel.getABLinearSimple() }
         addButton("获取A、B线性执行的结果") { viewModel.getABLinear() }
         setMargin()
-        addButton("获取A、B、C并发执行的结果-简单") { viewModel.getABCAsyncSimple() }
         addButton("获取A、B、C并发执行的结果") { viewModel.getABCAsync() }
     }
 
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         val button = Button(applicationContext).apply {
             isAllCaps = false
             text = content
+            gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+            updatePadding(70)
             setOnClickListener(click)
         }
         container.addView(button, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)

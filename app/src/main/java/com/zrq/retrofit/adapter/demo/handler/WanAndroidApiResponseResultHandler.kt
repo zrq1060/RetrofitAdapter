@@ -3,24 +3,24 @@ package com.zrq.retrofit.adapter.demo.handler
 import com.zrq.retrofit.adapter.ApiResponse
 import com.zrq.retrofit.adapter.ApiResponseResultHandler
 import com.zrq.retrofit.adapter.demo.RulesException
-import com.zrq.retrofit.adapter.demo.entity.apiopen.ApiOpenBaseModel
+import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseModel
 import com.zrq.retrofit.adapter.exception.ResponseBodyEmptyException
 import com.zrq.retrofit.adapter.exception.ResponseCodeErrorException
 import retrofit2.Response
 
 /**
- * 描述：[ApiOpenBaseModel]逻辑处理类，返回值不为空，并且[ApiOpenBaseModel.code]为200，并且[ApiOpenBaseModel.result]不为空，代表成功
+ * 描述：[WanAndroidBaseModel]逻辑处理类，返回值不为空，并且[WanAndroidBaseModel.errorCode]为0，并且[WanAndroidBaseModel.data]不为空，代表成功
  *
  * @author zhangrq
  * createTime 2021/5/17 15:15
  */
-class ApiOpenBaseModelApiResponseResultHandler : ApiResponseResultHandler {
+class WanAndroidApiResponseResultHandler : ApiResponseResultHandler {
     override fun priority(): Int {
         return 0
     }
 
     override fun shouldHandle(resultClass: Class<*>): Boolean {
-        return resultClass == ApiOpenBaseModel::class.java
+        return resultClass == WanAndroidBaseModel::class.java
     }
 
     override fun <T> handleOnResponse(response: Response<T>): ApiResponse<T> {
@@ -29,24 +29,24 @@ class ApiOpenBaseModelApiResponseResultHandler : ApiResponseResultHandler {
             val body = response.body()
             if (body != null) {
                 // body不为空
-                val baseResult = body as ApiOpenBaseModel<*>
-                val baseResultCode = baseResult.code
-                if (baseResultCode == 200) {
+                val baseData = body as WanAndroidBaseModel<*>
+                val baseDataCode = baseData.errorCode
+                if (baseDataCode == 0) {
                     // 公司规则成功
-                    val result = baseResult.result
-                    if (result != null) {
-                        // result有值
+                    val data = baseData.data
+                    if (data != null) {
+                        // data有值
                         ApiResponse.success(body)
                     } else {
-                        // result无值
-                        ApiResponse.exception(RulesException("BaseResult result is null"))
+                        // data无值
+                        ApiResponse.exception(RulesException("BaseData data is null"))
                     }
                 } else {
                     // 公司规则失败
-                    if (baseResultCode == null) {
-                        ApiResponse.exception(RulesException("BaseResult code is null"))
+                    if (baseDataCode == null) {
+                        ApiResponse.exception(RulesException("BaseData code is null"))
                     } else {
-                        ApiResponse.error(baseResultCode, baseResult.message ?: "")
+                        ApiResponse.error(baseDataCode, baseData.errorMsg ?: "")
                     }
                 }
             } else {

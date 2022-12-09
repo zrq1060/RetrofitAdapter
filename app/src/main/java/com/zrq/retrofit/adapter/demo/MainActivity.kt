@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         // buttons
         addButton("清除") { viewModel.clearHint() }
         setMargin()
+        addButton("ApiOpen接口_原始_Call") { viewModel.getApiOpenList_Call() }
+        addButton("ApiOpen接口_原始_Suspend") { viewModel.getApiOpenList_Suspend() }
+        setMargin()
         addButton("ApiOpen接口_返回ApiResponse_命令式处理") { viewModel.getApiOpenList_ApiResponse_Imperative() }
         addButton("ApiOpen接口_返回ApiResponse_声明式处理") { viewModel.getApiOpenList_ApiResponse_Declarative() }
         setMargin()

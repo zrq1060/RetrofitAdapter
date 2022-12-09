@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zrq.retrofit.adapter.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * 描述：
@@ -18,6 +20,33 @@ class TestViewModel : ViewModel() {
     private val repository = TestRepository()
     val hintText = MutableLiveData<String>()
     val loading = MutableLiveData(false)
+
+    /**
+     * 获取ApiOpen接口列表数据，原始Call。
+     */
+    fun getApiOpenList_Call() {
+        viewModelScope.launch {
+            showLoading()
+            val result = repository.getApiOpenList_Call(1)
+            val execute = withContext(Dispatchers.IO) {
+                result.execute()
+            }
+            setResultHint("result=${execute}")
+            hideLoading()
+        }
+    }
+
+    /**
+     * 获取ApiOpen接口列表数据，原始Suspend。
+     */
+    fun getApiOpenList_Suspend() {
+        viewModelScope.launch {
+            showLoading()
+            val result = repository.getApiOpenList_Suspend(1)
+            setResultHint("result=${result}")
+            hideLoading()
+        }
+    }
 
     /**
      * 获取ApiOpen接口列表数据，返回ApiResponse，命令式处理。

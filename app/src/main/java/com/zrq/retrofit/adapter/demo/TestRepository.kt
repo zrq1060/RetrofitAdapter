@@ -31,6 +31,14 @@ class TestRepository {
         .create(TestService::class.java)
 
     /* -------------------ApiOpen接口------------------- */
+    // 获取ApiOpen接口列表数据，返回Call。
+    fun getApiOpenList_Call(page: Int, size: Int = 10) =
+        api.getImagesCall(page, size)
+
+    // 获取ApiOpen接口列表数据，返回对象。
+    suspend fun getApiOpenList_Suspend(page: Int, size: Int = 10) =
+        api.getImagesSuspend(page, size)
+
     // 获取ApiOpen接口列表数据，返回ApiResponse。
     suspend fun getApiOpenList_ApiResponse(page: Int, size: Int = 10) =
         api.getImages(page, size)

@@ -169,6 +169,8 @@ viewModelScope.launch {
     api.getUser()
         .onSuccess {
             // 成功，此方法内可直接拿到-成功数据data
+        }.onFailure {
+            // 失败，包含下面的Error、Exception。
         }.onError {
             // 失败-错误，此方法内可直接拿到-code、message
         }.onException {
@@ -184,6 +186,9 @@ viewModelScope.launch {
     when (val result = api.getUser()) {
         is ApiResponse.Success -> {
             // 成功，可通过result拿到-成功数据data
+        }
+        is ApiResponse.Failure -> {
+            // 失败，包含下面的Error、Exception。
         }
         is ApiResponse.Failure.Error -> {
             // 失败-错误，可通过result拿到-code、message

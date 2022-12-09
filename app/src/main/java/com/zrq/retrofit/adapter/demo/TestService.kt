@@ -8,6 +8,7 @@ import com.zrq.retrofit.adapter.demo.entity.apiopen.GetTimeData
 import com.zrq.retrofit.adapter.demo.entity.wanandroid.FeedArticleListData
 import com.zrq.retrofit.adapter.demo.entity.wanandroid.WanAndroidBaseModel
 import com.zrq.retrofit.adapter.demo.handler.NetworkApiResponseHandler
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,8 +20,27 @@ import retrofit2.http.Query
  * createTime 2021/5/17 14:22
  */
 interface TestService {
+
     /**
-     * OpenApi，获取图片列表
+     * OpenApi，获取图片列表-Call方式
+     */
+    @GET("api/getImages")
+    fun getImagesCall(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<ApiOpenBaseModel<GetImagesData>>
+
+    /**
+     * OpenApi，获取图片列表-Suspend方式
+     */
+    @GET("api/getImages")
+    suspend fun getImagesSuspend(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): ApiOpenBaseModel<GetImagesData>
+
+    /**
+     * OpenApi，获取图片列表-ApiResponse方式
      */
     @GET("api/getImages")
     suspend fun getImages(
